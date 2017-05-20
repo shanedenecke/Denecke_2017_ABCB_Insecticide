@@ -127,7 +127,7 @@ abcb.hm$Wxac <- NULL
 ```
 
 
-```{r Plot figure 1}
+```{r Plot figure 1,fig.width=10}
 par(mar = c(5, 12, 4, 2),family="serif")
 color2D.matplot(abcb.hm, 
                 show.values = FALSE,
