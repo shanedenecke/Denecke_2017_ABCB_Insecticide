@@ -1,0 +1,26 @@
+Pesticide,Genotype,Rep,Dose,Alive,Dead,Total,Percent_Survival,Percent_Mortality,Stage,Date,Conditions
+Nitenpyram,Mdr65KO x w1118,1,2,19,1,20,0.95,0.05,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x w1118,2,2,20,0,20,1,0,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x w1118,3,2,18,2,20,0.9,0.1,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x w1118,4,2,20,0,20,1,0,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x w1118,5,2,19,1,20,0.95,0.05,Adult,23.9.16,22d
+Nitenpyram,Wxac x w1118,1,2,20,0,20,1,0,Adult,23.9.16,22d
+Nitenpyram,Wxac x w1118,2,2,19,1,20,0.95,0.05,Adult,23.9.16,22d
+Nitenpyram,Wxac x w1118,3,2,18,2,20,0.9,0.1,Adult,23.9.16,22d
+Nitenpyram,Wxac x w1118,4,2,19,1,20,0.95,0.05,Adult,23.9.16,22d
+Nitenpyram,Wxac x w1118,5,2,19,0,19,1,0,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x Excel_DF,1,2,4,16,20,0.2,0.8,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x Excel_DF,2,2,3,17,20,0.15,0.85,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x Excel_DF,3,2,6,14,20,0.3,0.7,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x Excel_DF,4,2,2,18,20,0.1,0.9,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x Excel_DF,5,2,0,20,20,0,1,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x Bloom_DF,1,2,0,20,20,0,1,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x Bloom_DF,2,2,1,18,19,0.0526315789,0.9473684211,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x Bloom_DF,3,2,0,20,20,0,1,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x Bloom_DF,4,2,1,19,20,0.05,0.95,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x Bloom_DF,5,2,2,17,19,0.1052631579,0.8947368421,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x Mdr65KO,1,2,1,19,20,0.05,0.95,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x Mdr65KO,2,2,0,20,20,0,1,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x Mdr65KO,3,2,0,20,20,0,1,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x Mdr65KO,4,2,0,20,20,0,1,Adult,23.9.16,22d
+Nitenpyram,Mdr65KO x Mdr65KO,5,2,0,19,19,0,1,Adult,23.9.16,22d
