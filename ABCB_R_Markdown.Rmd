@@ -28,7 +28,7 @@ knitr::opts_knit$set(root.dir = "~/test_ABCB")
 Welcome to the R markdown walk through for the paper *Welcome to the R markdown companion to the recent publication Describing the Role of Drosophila melanogaster ABCB Transporters in Insecticide Biology Using CRISPR-Cas9 Knockouts* (Denecke et. al 2017). This document is designed to guide the reader through every step of the analysis accomplished in the paper and allow for the reproducibility of the study.
 
 
-Before beginning a few housekeeping issues must be addressed. Firstly, all code demonstrated here was optimized on a linux machine but has been tested on a mac and a PC. While it should work the particular specifications of the environment in which it was written are listed below.
+Before beginning a few housekeeping issues must be addressed. Firstly, all code demonstrated here was optimized on a Linux machine but has been tested on a mac and a PC. While it should work the particular specifications of the environment in which it was written are listed below.
 
 
 ```{r Display Version}
@@ -49,7 +49,7 @@ library(insect.toxicology)
 library(plotrix)
 ```
 
-The data will need to be downloaded from the Mendeley repository. This can be done with the follwoing code.
+The data will need to be downloaded from the Mendeley repository. This can be done with the following code.
 
 ```{r Download Data}
 #download.file("https://data.mendeley.com/datasets/92sx2h3kfs/1/files/10fd8799-4c51-4efc-98a4-80a438102d30/Fig2_Mdr65KO_Lc50.csv?dl=1",destfile="~/test_ABCB/Denecke_ABCB.zip")
@@ -57,6 +57,7 @@ The data will need to be downloaded from the Mendeley repository. This can be do
 ```
 
 Lastly, some custom functions that are used during the analysis can be loaded now. 
+
 ```{r Basic Functions}
 
 firstup <- function(x) {
@@ -73,18 +74,26 @@ multi.gsub <- function(vector,find,replace){
 } 
 ```
 
+## Figure 1
+
+Now the analysis proper can be started. The first figure in the paper deals with the change in insecticide resistance engendered by each of the 3 ABCB deletions. 
+
+First import the toxicology data into R.
 
 ```{r Read in Data for Figure 1}
 abcb.combined <-read.csv("Fig1_ABCB_Combined.csv")
 ```
 
+
+The next chunk of code will add an abbots correction to for each insecticide/dose/genotype combination. This function (abbots.correct.table) is part of the insect.toxicology package available in my github repository (shanedenecke/insect.toxicology).
+
 ```{r Import Figure 1}
 abcb.abbots <- abbots.correction.table(abcb.combined,control="wxac",write=F) %>%
       filter(dose!=0)
-
 ```
 
 
+This data must be formatted before plotting. We need to make calls about whether a genotype is more resistant or susceptible to a given genotype. As discussed in the paper, this is done by the rather crude method of non overlapping 95% confidence intervals outlined by Rosenheim and Hoy (1987). Once calls are made, they can be converted to numeric values for plotting.
 
 ```{r Format figure 1}
 
@@ -126,6 +135,7 @@ abcb.hm$Wxac <- NULL
 
 ```
 
+Now, the data can be plotted using the plotrix package.
 
 ```{r Plot figure 1,fig.width=10}
 par(mar = c(5, 12, 4, 2),family="serif")
@@ -146,9 +156,17 @@ axis(2, at = seq_len(nrow(abcb.hm)) -0.5,
 ```
 
 
+## Supplementary Figure 3
+
+Supplementary figures 1 and 2 are not data driven and are not discussed in this file. Supplementary figure 3, however, reflects the increased susceptibility to imidacloprid metabolites observed in Mdr65KO. 
+
+First, the data is imported.
+
 ```{r Import data for figure S3}
 m65.metabolites <- read.csv("FigS3_M65_Metabolites.csv")
 ```
+
+The data can be formatted so that the plot will look nice.
 
 ```{r Format data for figure S3}
 m65.metabolites.corrected <- abbots.correction.table(m65.metabolites,control="wxac",write=F)
@@ -156,6 +174,8 @@ annot <- data.frame(x = rep(-Inf, length(unique(m65.metabolites.corrected$genoty
 m65.metabolites.corrected$genotype <- factor(m65.metabolites.corrected$genotype,levels=c("wxac","mdr65ko"))
 m65.metabolites.corrected$pesticide <- factor(m65.metabolites.corrected$pesticide,levels=c("imi-olefin","imi-5-oh"))
 ```
+
+Lastly the Plot for supplementary figure 3. It appears like Mdr65KO is more susceptible to IMI-Olefin and IMI-5OH.
 
 ```{r Plot figure S3}
 gp <- ggplot(m65.metabolites.corrected,aes(x=dose,y=corrected.survival,fill=genotype)) 
@@ -177,16 +197,20 @@ gp <- ggplot(m65.metabolites.corrected,aes(x=dose,y=corrected.survival,fill=geno
 print(gp) 
 ```
 
+## Figure 2
+
+Figure 2 considers the Lc50 ratios of Mdr65KO to its background control. 
+
+The first chunk of code will import the data.
 
 ```{r Read Data in for figure 2}
 rr <- read.csv("Fig2_RR_Summary.csv") %>%
       arrange(Lethal.Dose.Ratio)
+
+rr$Insecticide <-  factor(rr$Insecticide,levels=rr$Insecticide)
 ```
 
-```{r Format data for figure 2}
-rr$Insecticide <-  factor(rr$Insecticide,levels=rr$Insecticide)
-col <- colorRampPalette(c("grey90","grey25"))(length(rr$Insecticide))
-```
+The data can then be plotted to reflect the estimated differences MDR65 substrate affinity.
 
 ```{r Plot figure 2}
 gp <- ggplot(data=rr,aes(x=Insecticide,y=Lethal.Dose.Ratio))
@@ -205,11 +229,17 @@ gp <- ggplot(data=rr,aes(x=Insecticide,y=Lethal.Dose.Ratio))
       print(gp)
 ```
 
+## Figure 3 
+
+Verapamil is a ABCB inhibitor that acts as an insecticide synergist. Figure 3 assessed the impact of verapamil synergism with and without a functional copy of *Mdr65*.
+
+The data for figure 3 is imported.
 
 ```{r Import data for Figure 3}
 verapamil <- read.csv("Fig3_Verapamil_Synergism.csv")
 ```
 
+The data for figure 3 is formatted.
 
 ```{r Format data for Figure 3}
 ver.corrected <- lapply(split(verapamil,verapamil$Synergist),abbots.correction.table,control="wxac",write=F)
@@ -224,6 +254,9 @@ for(i in 1:nrow(ver.summary)){
 annot <- data.frame(x = rep(-Inf, length(unique(ver.summary$genotype))), y = rep(Inf, length(unique(ver.summary$genotype))), genotype=as.character(unique(ver.summary$genotype)),labs=LETTERS[1:length(unique(ver.summary$genotype))])
 
 ```
+
+
+Figure 3 is plotted. It looks as though the only difference between verapamil + and verapamil - treatments is in the Wxac background, when *Mdr65* is present. 
 
 ```{r}
 gp <- ggplot(ver.summary,aes(x=dose,y=corrected.survival,fill=synergist,group=interaction(dose,synergist))) 
@@ -247,16 +280,16 @@ print(gp)
 
 ## Figure 4
 
+Another way to confirm the role of ABCB transporters (in this case *Mdr65*) in insecticide resistance is to use genetic complementation. Here, the Mdr65KO genotype is crossed to genotypes which lack a region of their genomes that spans the *Mdr65* locus. 
+
+The data for figure 4 is imported into R. Very minor formatting is also applied.
+
 ```{r Import data for figure 4}
-
 def <- read.csv("Fig4_Mdr65_Deficiency.csv")
-
-```
-
-```{r Format data for figure 4}
 def$Genotype <- factor(def$Genotype,levels=c("Wxac x w1118","Mdr65KO x w1118", "Mdr65KO x Excel_DF", "Mdr65KO x Bloom_DF", "Mdr65KO x Mdr65KO"))
-col <- colorRampPalette(c("grey90","grey25"))
 ```
+
+Figure 4 can then be plotted. The black and grey dots represent genotypes with 2 and 1 copy of *Mdr65* respectively. These appear far more resistant than do the latter 3 genotypes which all lack *Mdr65*. 
 
 ```{r Plot figure 4}
  gp <- ggplot(def,aes(x=Genotype,y=Alive,fill=Genotype))
@@ -275,15 +308,24 @@ col <- colorRampPalette(c("grey90","grey25"))
       print(gp)
 ```
 
+While these differences are pretty obvious, analysis of variance (ANOVA) with Tukey's post-hoc honestly significant difference can be used to report p values for each pairwise comparison. 
+
 ```{r figure 4 stats}
 mod <- with(def,aov(Alive~Genotype))
 TukeyHSD(x=mod, which='Genotype', conf.level=0.95)$Genotype[,"p adj"]
 ```
 
+## Figure 5
+
+And last but not least we have figure 5. This figure describes the quantification of the amount of insecticide (nitenpyram) in Mdr65KO flies compared to their control. 
+
+The data can be imported into R using the following code.
+
 ```{r Import data for figure 5}
 hplc <- read.csv("Fig5_HPLC_MS_Nitenpyram.csv",stringsAsFactors = F)
-options(scipen=999)
 ```
+
+As before, the data needs for formatting before we can plot it.
 
 ```{r Format data for figure 5}
 options(scipen=999)
@@ -296,6 +338,8 @@ hplc <- hplc[rev(order(hplc$Genotype)),]
 hplc$Genotype <- factor(hplc$Genotype,levels=c("Wxac","Mdr65KO"))
 hplc$Nitenpyram2 <- hplc$Nitenpyram/10000
 ```
+
+Lastly we create the dotplot. There appears to be large differences between Mdr65KO and control. There are no errorbars because doing so with such a small sample size (n=3) is misleading.
 
 ```{r Plot figure 5}
  gp <- ggplot(hplc,aes(x=Genotype,y=Nitenpyram2,fill=Genotype))
